@@ -1,16 +1,21 @@
 # SuperCoreGraphicLayer
 
-**1,000 complex paths. One CoreGraphics layer.**
+**Same CoreGraphics drawing. Different CGContext backends.**
 
 An experimental `CALayer` that draws CoreGraphics commands into an IOSurface,
 using the private context path also found in WebKit.
 
-![About 10 times the display cadence in the complex-path presenter experiment](Docs/assets/presentation-cadence.png)
+![CoreGraphics comparison: drawRect at 5.8 and the IOSurface presenter at 59.8 display swaps per second, with a rebuilt CAShapeLayer reference at 6.0](Docs/assets/presentation-cadence.png)
 
-**59.8 vs 6.0 display swaps/second** in the experiment that started this project:
-1,000 complex paths, every shape layer recreated on every update, iPhone 12.
-The next-callback p95 was about **16.8 ms in both cases**. Only the display trace
-revealed the difference.
+**59.8 vs 5.8 display swaps/second — about 10.4× the cadence of `UIView.drawRect:`**
+in the experiment that started this project: 1,000 complex paths, redrawn every
+update, on iPhone 12. The fully rebuilt CAShapeLayer reference reached **6.0**.
+
+Both CoreGraphics backends call the same scene-drawing function. `drawRect:` uses
+the [UIKit-provided CGContext](https://developer.apple.com/documentation/uikit/uigraphicsgetcurrentcontext%28%29),
+while the IOSurface presenter creates a private IOSurface-backed CGContext and
+publishes the surface as layer contents. This compares context and presentation
+paths while keeping the scene drawing code the same.
 
 These numbers are from the original IOSurface presenter, before it was extracted
 into `SCGLayer`. The library wraps that backend; the standalone demo is a newer
@@ -73,18 +78,28 @@ Runtime availability and acceleration must be checked on your actual target.
 
 ## What the experiment says
 
-| 1,000 complex paths | Rebuilt CAShapeLayer tree | Original IOSurface presenter |
-| --- | ---: | ---: |
-| App-associated display swaps / second | 6.0 | 59.8 |
-| Display-swap spacing p95 | 183.5 ms | 16.7 ms |
-| Next callback p95, same trace | 16.8 ms | 16.7 ms |
-| App CPU, uninstrumented, % of one core | 59.0% | 70.3% |
-| App footprint at end of run | 7.3 MiB | 81.7 MiB |
+| 1,000 complex paths | Rebuilt CAShapeLayer tree | drawRect (CoreGraphics) | IOSurface presenter (CoreGraphics) |
+| --- | ---: | ---: | ---: |
+| App-associated display swaps / second | 6.0 | 5.8 | 59.8 |
+| Display-swap spacing p95 | 183.5 ms | 183.6 ms | 16.7 ms |
+| Next callback p95, same trace | 16.8 ms | 183.7 ms | 16.7 ms |
+| App CPU, uninstrumented, % of one core | 59.0% | 97.8% | 70.3% |
+| App footprint at end of run | 7.3 MiB | 21.1 MiB | 81.7 MiB |
+
+The CAShapeLayer and IOSurface callback intervals were both near one refresh
+period despite very different display cadence. The `drawRect` callback interval
+also reflected long App-side drawing work. Presentation comes from the display
+trace, independently of those callback measurements.
 
 Display data comes from one 8-second steady trace per condition; process metrics
 are medians of two separate 10-second runs. The baseline fully rebuilds the tree;
 retained trees have different costs. This is a specific dense-path workload,
 not a general speedup for every CALayer or CoreGraphics operation.
+
+For 1,000 linear gradients, the same two CoreGraphics paths reached **47.2**
+(`drawRect`) and **59.3** (IOSurface) display swaps/second. The size of the benefit
+depends on the drawing workload; [the full records](Benchmarks/README.md) include
+both scenes.
 
 **App footprint excludes some render-server and driver allocations.** The table
 does not establish total graphics memory savings; this presenter used more App

@@ -66,6 +66,19 @@ and one trace per condition do not establish statistical confidence intervals.
 
 ### Drawing workload
 
+The `drawRect` and IOSurface backends both call the same `DemoScene::draw`
+CoreGraphics routine, with the same geometry, resource variants, and draw order.
+`drawRect` obtains its context from `UIGraphicsGetCurrentContext()` inside UIKit's
+drawing callback. The presenter creates its own IOSurface-backed context with
+the private constructor, flushes drawing, and publishes the surface as contents.
+The comparison therefore changes the context/presentation path while keeping
+the scene drawing code the same. The CAShapeLayer tree is a separate reference.
+
+For complex paths, the measured display cadence ratio is 59.7816 / 5.7668 ≈ 10.4×
+versus `drawRect`; for linear gradients it is 59.2859 / 47.1818 ≈ 1.26×. Ratios use
+the unrounded trace rates. These are presentation-rate ratios for the recorded
+workload, not isolated GPU speedups or guarantees about every CoreGraphics operation.
+
 - **Shape:** opaque 24×24 pt path, 16 cubic outer segments, a four-segment
   elliptical hole, even-odd fill, and a 1.25 pt white round stroke.
 - **Gradient:** opaque 24×24 pt rectangle, three sRGB stops at 0, 0.4, 1 along
