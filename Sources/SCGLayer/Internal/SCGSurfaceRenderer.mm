@@ -1,17 +1,21 @@
 #import "SCGSurfaceRenderer.h"
 
 #import <IOSurface/IOSurfaceRef.h>
-#include <dlfcn.h>
 #include <cmath>
 #include <cstring>
 #include <memory>
 #include <vector>
 
 // Signatures: WebKit Source/WebCore/PAL/pal/spi/cg/CoreGraphicsSPI.h.
-using CreateContext = CGContextRef (*)(IOSurfaceRef, size_t, size_t, size_t, size_t,
-                                       CGColorSpaceRef, CGBitmapInfo, CFDictionaryRef);
-using CreateLegacyContext = CGContextRef (*)(IOSurfaceRef, size_t, size_t, size_t, size_t,
-                                             CGColorSpaceRef, CGBitmapInfo);
+// Weak imports let the library load even when the runtime lacks either symbol.
+extern "C" {
+CGContextRef CGIOSurfaceContextCreateWithOptions(IOSurfaceRef, size_t, size_t, size_t, size_t,
+                                                CGColorSpaceRef, CGBitmapInfo, CFDictionaryRef)
+    __attribute__((weak_import));
+CGContextRef CGIOSurfaceContextCreate(IOSurfaceRef, size_t, size_t, size_t, size_t,
+                                     CGColorSpaceRef, CGBitmapInfo)
+    __attribute__((weak_import));
+}
 
 namespace {
 struct Buffer {
@@ -25,8 +29,8 @@ struct Buffer {
 }  // namespace
 
 @implementation SCGSurfaceRenderer {
-  CreateContext _create;
-  CreateLegacyContext _createLegacy;
+  decltype(&CGIOSurfaceContextCreateWithOptions) _create;
+  decltype(&CGIOSurfaceContextCreate) _createLegacy;
   std::vector<std::unique_ptr<Buffer>> _buffers;
   Buffer *_front;
   size_t _width, _height;
@@ -36,10 +40,8 @@ struct Buffer {
 - (instancetype)initWithPrivateAPIEnabled:(BOOL)enabled {
   if ((self = [super init])) {
     if (enabled) {
-      _create = reinterpret_cast<CreateContext>(
-          dlsym(RTLD_DEFAULT, "CGIOSurfaceContextCreateWithOptions"));
-      _createLegacy =
-          reinterpret_cast<CreateLegacyContext>(dlsym(RTLD_DEFAULT, "CGIOSurfaceContextCreate"));
+      _create = CGIOSurfaceContextCreateWithOptions;
+      _createLegacy = CGIOSurfaceContextCreate;
     }
     _status = _create         ? @"CGIOSurfaceContextCreateWithOptions"
               : _createLegacy ? @"CGIOSurfaceContextCreate"

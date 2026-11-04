@@ -154,7 +154,7 @@ does not select this private context.
 - **App Store review:** Apple's [App Review Guideline 2.5.1](https://developer.apple.com/app-store/review/guidelines/#software-requirements)
   requires public APIs. The CGContext constructor and direct IOSurface layer
   contents used here are private interfaces; using them can cause rejection.
-  Resolving a symbol with `dlsym` does not make it public or compliant.
+  Declaring a symbol with `weak_import` does not make it public or compliant.
 - **Compatibility and stability:** Apple can remove or change these interfaces,
   signatures, synchronization behavior, and rendering paths without notice.
   WebKit's use of them does not grant third-party apps the same API guarantees.

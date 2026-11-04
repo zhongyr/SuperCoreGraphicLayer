@@ -62,6 +62,12 @@ counts successful submissions; `droppedFrameCount` counts buffer-busy failures.
 Neither counter is a presentation counter. Allocation/context errors are exposed
 through `lastRenderError` and the immediate method's error argument.
 
+The private CGContext constructors use `weak_import` declarations and link against
+CoreGraphics. The build SDK must export both symbols; public iOS 26.0 SDKs were
+verified. At runtime, a missing symbol has a null address. The renderer prefers
+`CGIOSurfaceContextCreateWithOptions`, uses `CGIOSurfaceContextCreate` if only the
+older entry point is available, and reports unavailability if both are missing.
+
 `contextAPIAvailable` checks symbol availability only. Context creation can still
 fail, and acceleration must be verified on the actual device/OS/workload. The
 private constructor and direct IOSurface layer contents have no public stability
