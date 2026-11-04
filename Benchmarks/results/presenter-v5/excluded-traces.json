@@ -1,0 +1,10 @@
+[
+  {
+    "scene": "gradient",
+    "backend": "layers",
+    "reason": "Incomplete display-swap correlation; observed event counts are not usable as FPS.",
+    "appUpdateCount": 269,
+    "matchedDisplaySwapCount": 1,
+    "correlationCoverage": 0.0037174721189591076
+  }
+]

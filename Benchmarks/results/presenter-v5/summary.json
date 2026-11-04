@@ -1,0 +1,214 @@
+{
+  "implementation": "Original IOSurface presenter, before SCGLayer extraction",
+  "fixtureVersion": 5,
+  "date": "2026-11-04",
+  "device": "iPhone 12 / A14",
+  "os": "iOS 27.2 beta (24B5110a)",
+  "canvasPoints": [
+    358,
+    447
+  ],
+  "scale": 3,
+  "count": 1000,
+  "targetHz": 60,
+  "layerPolicy": "Rebuild all content layers on every update",
+  "benchmark": {
+    "steadySeconds": 10,
+    "warmupSeconds": 3,
+    "repeats": 2,
+    "cooldownSeconds": 25
+  },
+  "trace": {
+    "steadySeconds": 8,
+    "warmupSeconds": 12,
+    "repeats": 1,
+    "template": "Animation Hitches + Points of Interest"
+  },
+  "sourceHashes": {
+    "SurfacePresenter.mm": "9c257f6bf767e3ad4e97d7113322a5cfb050100f8cb22a20781473a6faceb21b",
+    "DemoScene.mm": "c8f9297498f5040358aec1baf348215e15a75b57cec2f615881992a15fa09077",
+    "main.mm": "26206c3164f22e9bda18b792417724cb5154b890c8c25af1a5a50155cd32b485"
+  },
+  "signedExecutableSHA256": "91ecc31bb7dc5daa8871a4407627223d8ad5123bae0cc1269bfc362d2dc42c34",
+  "rows": [
+    {
+      "scene": "shape",
+      "backend": "layers",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 6.003783666268035,
+      "displaySwapP95MS": 183.496917,
+      "traceCallbackP95MS": 16.812916663184296,
+      "updateToNextCallbackP95MS": 16.812416666653007,
+      "updateToNextCallbackP95MSRange": [
+        16.805749997729436,
+        16.81908333557658
+      ],
+      "processCPUPercentOfOneCore": 58.99385685622481,
+      "processCPUPercentOfOneCoreRange": [
+        58.03313005142825,
+        59.954583661021374
+      ],
+      "processFootprintMiB": 7.345333099365234,
+      "processFootprintMiBRange": [
+        7.282844543457031,
+        7.4078216552734375
+      ],
+      "ownedIOSurfaceBytes": 0.0,
+      "ownedIOSurfaceBytesRange": [
+        0,
+        0
+      ],
+      "maxThermalState": 0
+    },
+    {
+      "scene": "shape",
+      "backend": "drawRect",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 5.766828205173684,
+      "displaySwapP95MS": 183.623084,
+      "traceCallbackP95MS": 183.69254166464088,
+      "updateToNextCallbackP95MS": 158.1702083349228,
+      "updateToNextCallbackP95MSRange": [
+        153.71279166720342,
+        162.62762500264216
+      ],
+      "processCPUPercentOfOneCore": 97.78534780365861,
+      "processCPUPercentOfOneCoreRange": [
+        97.14619728287833,
+        98.42449832443889
+      ],
+      "processFootprintMiB": 21.10315704345703,
+      "processFootprintMiBRange": [
+        18.28284454345703,
+        23.92346954345703
+      ],
+      "ownedIOSurfaceBytes": 0.0,
+      "ownedIOSurfaceBytesRange": [
+        0,
+        0
+      ],
+      "maxThermalState": 1
+    },
+    {
+      "scene": "shape",
+      "backend": "IOSurface",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 59.7815505338553,
+      "displaySwapP95MS": 16.696959,
+      "traceCallbackP95MS": 16.734624994569458,
+      "updateToNextCallbackP95MS": 16.80547916839714,
+      "updateToNextCallbackP95MSRange": [
+        16.8047083352576,
+        16.806250001536682
+      ],
+      "processCPUPercentOfOneCore": 70.2663086222025,
+      "processCPUPercentOfOneCoreRange": [
+        69.66734941725318,
+        70.86526782715181
+      ],
+      "processFootprintMiB": 81.69695281982422,
+      "processFootprintMiBRange": [
+        81.37664031982422,
+        82.01726531982422
+      ],
+      "ownedIOSurfaceBytes": 17508096.0,
+      "ownedIOSurfaceBytesRange": [
+        17508096,
+        17508096
+      ],
+      "maxThermalState": 1
+    },
+    {
+      "scene": "gradient",
+      "backend": "layers",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": null,
+      "displaySwapP95MS": null,
+      "traceCallbackP95MS": null,
+      "updateToNextCallbackP95MS": 16.775625001173466,
+      "updateToNextCallbackP95MSRange": [
+        16.767083332524635,
+        16.784166669822298
+      ],
+      "processCPUPercentOfOneCore": 55.2222613220583,
+      "processCPUPercentOfOneCoreRange": [
+        54.74688849290144,
+        55.69763415121516
+      ],
+      "processFootprintMiB": 7.2281341552734375,
+      "processFootprintMiBRange": [
+        7.1734466552734375,
+        7.2828216552734375
+      ],
+      "ownedIOSurfaceBytes": 0.0,
+      "ownedIOSurfaceBytesRange": [
+        0,
+        0
+      ],
+      "maxThermalState": 1
+    },
+    {
+      "scene": "gradient",
+      "backend": "drawRect",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 47.18182018138531,
+      "displaySwapP95MS": 33.373708,
+      "traceCallbackP95MS": 20.41566666594008,
+      "updateToNextCallbackP95MS": 18.89068750460865,
+      "updateToNextCallbackP95MSRange": [
+        18.731583339103963,
+        19.049791670113336
+      ],
+      "processCPUPercentOfOneCore": 100.21103773925975,
+      "processCPUPercentOfOneCoreRange": [
+        100.19118921291235,
+        100.23088626560714
+      ],
+      "processFootprintMiB": 24.04846954345703,
+      "processFootprintMiBRange": [
+        24.01721954345703,
+        24.07971954345703
+      ],
+      "ownedIOSurfaceBytes": 0.0,
+      "ownedIOSurfaceBytesRange": [
+        0,
+        0
+      ],
+      "maxThermalState": 1
+    },
+    {
+      "scene": "gradient",
+      "backend": "IOSurface",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 59.28587196174394,
+      "displaySwapP95MS": 16.696959,
+      "traceCallbackP95MS": 16.75766666448908,
+      "updateToNextCallbackP95MS": 16.74689583524014,
+      "updateToNextCallbackP95MSRange": [
+        16.74608333269134,
+        16.747708337788936
+      ],
+      "processCPUPercentOfOneCore": 47.99592879968877,
+      "processCPUPercentOfOneCoreRange": [
+        47.80925766517821,
+        48.18259993419933
+      ],
+      "processFootprintMiB": 33.29850387573242,
+      "processFootprintMiBRange": [
+        33.048492431640625,
+        33.54851531982422
+      ],
+      "ownedIOSurfaceBytes": 17508096.0,
+      "ownedIOSurfaceBytesRange": [
+        17508096,
+        17508096
+      ],
+      "maxThermalState": 1
+    }
+  ],
+  "notes": [
+    "These device measurements predate extraction into the SCGLayer library. Current standalone demo uses fixture version 6 and must be reported separately.",
+    "The incomplete gradient-layer trace is excluded. Missing display events are not counted as zero presented frames.",
+    "The original Instruments bundles remain local; these are exported numeric records without device identifiers or filesystem paths."
+  ]
+}
