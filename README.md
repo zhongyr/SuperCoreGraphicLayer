@@ -5,21 +5,26 @@
 An experimental `CALayer` that draws CoreGraphics commands into an IOSurface,
 using the private context path also found in WebKit.
 
-![CoreGraphics comparison: drawRect at 5.8 and the IOSurface presenter at 59.8 display swaps per second, with a rebuilt CAShapeLayer reference at 6.0](Docs/assets/presentation-cadence.png)
+![Real iPhone comparison of 1,000 moving paths: CAShapeLayer, drawRect, and SCGLayer](Docs/assets/shape-comparison.gif)
 
-**59.8 vs 5.8 display swaps/second — about 10.4× the cadence of `UIView.drawRect:`**
-in the experiment that started this project: 1,000 complex paths, redrawn every
-update, on iPhone 12. The fully rebuilt CAShapeLayer reference reached **6.0**.
+Actual iPhone 12 screen recordings, captured separately and played at **1× speed**.
+All three render the same moving paths; the layer backend rebuilds its entire tree.
+The GIF preview is limited to 25 fps. [Watch/download the MP4 →](Docs/assets/shape-comparison.mp4)
+This motion showcase is separate from the repaint benchmark below; screen recording adds overhead.
+
+Separate repaint benchmark: **60.0 vs 5.9 display swaps/second — about 10.1× the cadence of `UIView.drawRect:`**
+in the standalone SCGLayer demo: 1,000 complex paths, redrawn every update, on
+iPhone 12. The fully rebuilt CAShapeLayer reference reached **5.0**.
 
 Both CoreGraphics backends call the same scene-drawing function. `drawRect:` uses
 the [UIKit-provided CGContext](https://developer.apple.com/documentation/uikit/uigraphicsgetcurrentcontext%28%29),
-while the IOSurface presenter creates a private IOSurface-backed CGContext and
-publishes the surface as layer contents. This compares context and presentation
-paths while keeping the scene drawing code the same.
+while SCGLayer creates a private IOSurface-backed CGContext and publishes the
+surface as layer contents. This compares context and presentation paths while
+keeping the scene drawing code the same.
 
-These numbers are from the original IOSurface presenter, before it was extracted
-into `SCGLayer`. The library wraps that backend; the standalone demo is a newer
-fixture. [Measurement records and limitations →](Benchmarks/README.md)
+Measured through the public SCGLayer interface on a physical device, with five
+validated display traces and twelve separate process-measurement runs.
+[Measurement records, memory costs, and limitations →](Benchmarks/README.md)
 
 > **Private API experiment.** This is not an App Store-safe public-API renderer.
 > Read the [distribution risks](#private-api-and-distribution-risks) before using it.
@@ -51,12 +56,26 @@ update rather than unbounded allocation. Drawing belongs on the main thread.
 
 ## Try the demo
 
+![Real iPhone comparison of 1,000 moving gradients across the three rendering backends](Docs/assets/gradient-comparison.gif)
+
+The same motion with linear gradients. 20 fps GIF preview;
+[MP4 video →](Docs/assets/gradient-comparison.mp4).
+
+Select **Motion** in the demo, or launch with
+`-scene shape -backend surface -workload motion -count 1000`.
+The motion follows elapsed time, so slow renderers skip positions instead of slowing the animation clock.
+
+<details>
+<summary>Simulator screenshots</summary>
+
 <p>
   <img src="Docs/assets/shape-demo.png" width="280" alt="Real simulator screenshot of SCGLayer drawing curved paths with holes and strokes">
   <img src="Docs/assets/gradient-demo.png" width="280" alt="Real simulator screenshot of SCGLayer drawing three-stop gradients">
 </p>
 
 Actual simulator screenshots; they show output and controls, not device performance.
+
+</details>
 
 Open **[Demo/SCGDemo.xcodeproj](Demo/SCGDemo.xcodeproj)** and run the **SCGDemo**
 scheme. Switch between layers, `drawRect`, and SCGLayer. Use `-scene shape` or
@@ -73,20 +92,23 @@ experimental package currently has no versioned release.
 
 The deployment target is iOS 16. This is a build target, not a claim that the
 private APIs work on every supported OS. Simulator functionality was validated
-on iOS 26; the archived presenter measurements used an iPhone 12 on iOS 27.2 beta.
+on iOS 26; the packaged library also passed physical-device checks and the
+benchmarks below on an iPhone 12 running iOS 27.2 beta (24B5110a).
 Runtime availability and acceleration must be checked on your actual target.
 
 ## What the experiment says
 
-| 1,000 complex paths | Rebuilt CAShapeLayer tree | drawRect (CoreGraphics) | IOSurface presenter (CoreGraphics) |
-| --- | ---: | ---: | ---: |
-| App-associated display swaps / second | 6.0 | 5.8 | 59.8 |
-| Display-swap spacing p95 | 183.5 ms | 183.6 ms | 16.7 ms |
-| Next callback p95, same trace | 16.8 ms | 183.7 ms | 16.7 ms |
-| App CPU, uninstrumented, % of one core | 59.0% | 97.8% | 70.3% |
-| App footprint at end of run | 7.3 MiB | 21.1 MiB | 81.7 MiB |
+![Measured display cadence: drawRect at 5.9, SCGLayer at 60.0, and the rebuilt CAShapeLayer tree at 5.0 swaps per second](Docs/assets/presentation-cadence.png)
 
-The CAShapeLayer and IOSurface callback intervals were both near one refresh
+| 1,000 complex paths | Rebuilt CAShapeLayer tree | drawRect (CoreGraphics) | SCGLayer (CoreGraphics) |
+| --- | ---: | ---: | ---: |
+| App-associated display swaps / second | 5.0 | 5.9 | 60.0 |
+| Display-swap spacing p95 | 350.3 ms | 183.4 ms | 16.7 ms |
+| Next callback p95, same trace | 16.8 ms | 175.7 ms | 16.7 ms |
+| App CPU, uninstrumented, % of one core | 58.8% | 97.8% | 71.4% |
+| App footprint at end of run | 7.2 MiB | 24.2 MiB | 79.5 MiB |
+
+The CAShapeLayer and SCGLayer callback intervals were both near one refresh
 period despite very different display cadence. The `drawRect` callback interval
 also reflected long App-side drawing work. Presentation comes from the display
 trace, independently of those callback measurements.
@@ -96,16 +118,22 @@ are medians of two separate 10-second runs. The baseline fully rebuilds the tree
 retained trees have different costs. This is a specific dense-path workload,
 not a general speedup for every CALayer or CoreGraphics operation.
 
-For 1,000 linear gradients, the same two CoreGraphics paths reached **47.2**
-(`drawRect`) and **59.3** (IOSurface) display swaps/second. The size of the benefit
-depends on the drawing workload; [the full records](Benchmarks/README.md) include
-both scenes.
+For 1,000 linear gradients, the same two CoreGraphics paths reached **48.9**
+(`drawRect`) and **59.6** (SCGLayer) display swaps/second.
+CAGradientLayer display cadence is unavailable: the captures could not establish
+reliable app-associated display events, so no FPS is inferred from those counts.
+The size of the benefit depends on the drawing workload.
+[Both scenes and raw per-run records →](Benchmarks/README.md)
 
 **App footprint excludes some render-server and driver allocations.** The table
-does not establish total graphics memory savings; this presenter used more App
-memory. CPU and memory costs matter alongside displayed cadence. The gradient
-results and the excluded incomplete trace are documented in
-[Benchmarks](Benchmarks/README.md).
+does not establish total graphics memory savings; SCGLayer used more App memory
+in this path workload. The three-surface pool itself owned about 16.7 MiB, which
+may already be charged to footprint. Do not add the two values.
+
+Six physical-device functional cases and the native checks passed. Busy-buffer
+skips were observed, including 8 in the gradient trace run. These counters include
+warmup and automatic display passes; they are not a count of missing display frames.
+[Validation records and counter scope →](Benchmarks/README.md#device-validation)
 
 ## How it works
 
@@ -114,7 +142,7 @@ results and the excluded incomplete trace are documented in
 2. Draw into a reusable non-front buffer and flush pending CGContext work.
 3. Publish the IOSurface directly as layer contents for Core Animation.
 
-The app's Metal trace confirmed GPU work in the measured presenter workload.
+The app's Metal trace confirmed GPU work in the measured SCGLayer workload.
 CoreGraphics still performs CPU work, and individual operations may take different
 paths. A successful render call is a submission, not a GPU or presentation fence.
 The renderer reports unavailable APIs or allocation failures without substituting

@@ -1,0 +1,48 @@
+{
+  "device": "iPhone 12 / A14",
+  "os": "iOS 27.2 beta (24B5110a)",
+  "capture": "AVFoundation USB screen video; no audio",
+  "count": 1000,
+  "workload": "motion",
+  "playbackSpeed": 1,
+  "sourceTrimSeconds": [
+    1,
+    5
+  ],
+  "cropPixels": [
+    1074,
+    1341,
+    48,
+    1041
+  ],
+  "gifFramesPerSecond": {
+    "shape": 25,
+    "gradient": 20
+  },
+  "mp4ContainerFramesPerSecond": 60,
+  "notes": [
+    "Separate sequential recordings; no generated or interpolated motion.",
+    "CFR encoding repeats/omits captured frames while preserving elapsed time.",
+    "Recording adds overhead; the motion showcase is separate from the repaint benchmark."
+  ],
+  "scenes": {
+    "shape": {
+      "sourceVideoSHA256": {
+        "layers": "a05c7369676e07bbae911d60475785cb2e539ebf5bfcaa3183ee3401b0da4281",
+        "draw": "5e9c2436e9d17b9e1039dadb4653950c713210541cf03c600499a9327b43b117",
+        "surface": "b8c6a1c6e940cd3cb283d6cb7173cf323c6a807f3e283ad6832144298eebd7ef"
+      },
+      "gif": "shape-comparison.gif",
+      "video": "shape-comparison.mp4"
+    },
+    "gradient": {
+      "sourceVideoSHA256": {
+        "layers": "0ed6b6b80180a2d000e228be8bc3822cd2b2a6c57add18e7285ab63de6894c88",
+        "draw": "7773875c6379ce30ce552d23c52606a11c65014224bfb98a7892fd7bcc7596d0",
+        "surface": "86278b58a9e63a3058a5f071607085e1ab07545923c6421a7397a6bac33af59b"
+      },
+      "gif": "gradient-comparison.gif",
+      "video": "gradient-comparison.mp4"
+    }
+  }
+}

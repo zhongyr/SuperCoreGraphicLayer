@@ -1,0 +1,23 @@
+[
+  {
+    "scene": "gradient",
+    "backend": "layers",
+    "fixtureVersion": 6,
+    "captureConfiguration": "Animation Hitches + Points of Interest",
+    "reason": "Incomplete update-to-swap correlation; observed event counts are not a valid cadence result.",
+    "steadySeconds": 8.003669,
+    "uniqueAppSwapIDs": 301,
+    "matchedDisplaySwapCount": 21,
+    "observedSteadySwapEventsNotFPS": 19,
+    "correlationCoverage": 0.06976744186046512,
+    "maximumObservedEventGapMS": 4536.205125
+  },
+  {
+    "scene": "gradient",
+    "backend": "layers",
+    "fixtureVersion": 6,
+    "captureConfiguration": "Blank + Core Animation Commits + Core Animation Server + Frame Lifetimes + Display + Points of Interest",
+    "reason": "Presentation-only diagnostic lacks the app-associated swap/surface records required by this study's correlation check. No app cadence result is assigned.",
+    "missingRequiredSchema": "hitches-updates"
+  }
+]

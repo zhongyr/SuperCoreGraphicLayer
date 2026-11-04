@@ -1,0 +1,275 @@
+{
+  "implementation": "SCGLayer public API in the standalone Demo",
+  "fixtureVersion": 6,
+  "date": "2026-11-04",
+  "device": "iPhone 12 / A14",
+  "os": "iOS 27.2 beta (24B5110a)",
+  "canvasPoints": [
+    358,
+    447
+  ],
+  "scale": 3,
+  "count": 1000,
+  "targetHz": 60,
+  "layerPolicy": "Rebuild all content layers on every update",
+  "benchmark": {
+    "steadySeconds": 10,
+    "warmupSeconds": 3,
+    "repeats": 2,
+    "cooldownSeconds": 25
+  },
+  "trace": {
+    "steadySeconds": 8,
+    "warmupSeconds": 12,
+    "repeats": 1,
+    "defaultConfiguration": "Animation Hitches + Points of Interest",
+    "validatedCaptures": 5,
+    "excludedCaptures": 2
+  },
+  "sourceCommit": "bf54890be30d953fc0760bf0066eeb6555e2ee2b",
+  "sourceHashes": {
+    "Sources/SCGLayer/SCGLayer.mm": "481f6e13b553725bdde366a16ee91cfe11a2ad338c80ac1aad4946246613354b",
+    "Sources/SCGLayer/include/SCGLayer.h": "f04cdc5ff1fd02b0016403c4b20619d1dc924c8a1f3f30fb11612670c27f0f20",
+    "Sources/SCGLayer/Internal/SCGSurfaceRenderer.mm": "7455ec5fd29fc1b421f74cd1ccd19bc5cff80bdb8db07c5bfb2bfc45337f14c3",
+    "Sources/SCGLayer/Internal/SCGSurfaceRenderer.h": "52774fa170a09cf25da316ec9eaf498c3f53b4783f1e70a1e532413e59714d0c",
+    "Demo/DemoScene.h": "db2d06718f25a15507857d2e5676a9e67bf744ee00c552731342f9dc21c1b42d",
+    "Demo/DemoScene.mm": "09f155b3ddb404de58544c42dff4903257e94f366f639240d8c8ec42bc9d546a",
+    "Demo/main.mm": "e44b334171527838b59a2177c09ffe040f4e3744f4127fafd520073134e8a16a",
+    "Demo/README.md": "ef280f337a7f6f38c43f72410bfbc66b0d0e42e1345fff1a817dae33afcf2c7e",
+    "Demo/Info.plist": "2640f2ef3e4252482987949a1488a06eab00a0c45d2eae756d90e92a242c599b",
+    "Demo/SCGDemo.xcodeproj/project.pbxproj": "c86dd1c51484433cbae9fbe4624b1210df34620f7fe2565ec89f9dd9b5ada082",
+    "Demo/SCGDemo.xcodeproj/xcshareddata/xcschemes/SCGDemo.xcscheme": "4e96679d912c994a11689a3c27f9b9ad5fd9aba48c3daea5e5756a1d798dce3d"
+  },
+  "executableSHA256": "3576a323afd3ffd147265db778994594e45d6f1257841806dc05bda571c721a3",
+  "rows": [
+    {
+      "scene": "shape",
+      "backend": "layers",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 4.9962233497736825,
+      "displaySwapP95MS": 350.271458,
+      "traceCallbackP95MS": 16.808583335659932,
+      "traceMaxThermalState": 1,
+      "captureConfiguration": "Animation Hitches + Points of Interest",
+      "displayCadenceAvailable": true,
+      "updateToNextCallbackP95MS": 16.771437494753627,
+      "updateToNextCallbackP95MSRange": [
+        16.755208329414017,
+        16.787666660093237
+      ],
+      "processCPUPercentOfOneCore": 58.761118700482925,
+      "processCPUPercentOfOneCoreRange": [
+        58.250865922406945,
+        59.27137147855891
+      ],
+      "processFootprintMiB": 7.2125091552734375,
+      "processFootprintMiBRange": [
+        7.2046966552734375,
+        7.2203216552734375
+      ],
+      "ownedIOSurfaceBytes": 0.0,
+      "ownedIOSurfaceBytesRange": [
+        0,
+        0
+      ],
+      "poolDroppedFramesIncludingWarmupRange": [
+        0,
+        0
+      ],
+      "tracePoolDroppedFramesIncludingWarmup": 0,
+      "maxThermalState": 1
+    },
+    {
+      "scene": "shape",
+      "backend": "drawRect",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 5.943169923399969,
+      "displaySwapP95MS": 183.417375,
+      "traceCallbackP95MS": 175.70241666544462,
+      "traceMaxThermalState": 1,
+      "captureConfiguration": "Animation Hitches + Points of Interest",
+      "displayCadenceAvailable": true,
+      "updateToNextCallbackP95MS": 172.1122708331677,
+      "updateToNextCallbackP95MSRange": [
+        160.73195833450882,
+        183.4925833318266
+      ],
+      "processCPUPercentOfOneCore": 97.79334033363128,
+      "processCPUPercentOfOneCoreRange": [
+        97.65348685622789,
+        97.93319381103466
+      ],
+      "processFootprintMiB": 24.16565704345703,
+      "processFootprintMiBRange": [
+        23.70471954345703,
+        24.62659454345703
+      ],
+      "ownedIOSurfaceBytes": 0.0,
+      "ownedIOSurfaceBytesRange": [
+        0,
+        0
+      ],
+      "poolDroppedFramesIncludingWarmupRange": [
+        0,
+        0
+      ],
+      "tracePoolDroppedFramesIncludingWarmup": 0,
+      "maxThermalState": 1
+    },
+    {
+      "scene": "shape",
+      "backend": "SCGLayer",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 59.97612575344227,
+      "displaySwapP95MS": 16.681167,
+      "traceCallbackP95MS": 16.749624999647494,
+      "traceMaxThermalState": 0,
+      "captureConfiguration": "Animation Hitches + Points of Interest",
+      "displayCadenceAvailable": true,
+      "updateToNextCallbackP95MS": 16.784854167781305,
+      "updateToNextCallbackP95MSRange": [
+        16.781250000349246,
+        16.788458335213363
+      ],
+      "processCPUPercentOfOneCore": 71.42942274991668,
+      "processCPUPercentOfOneCoreRange": [
+        71.30594434543613,
+        71.55290115439723
+      ],
+      "processFootprintMiB": 79.51727676391602,
+      "processFootprintMiBRange": [
+        78.82976531982422,
+        80.20478820800781
+      ],
+      "ownedIOSurfaceBytes": 17508096.0,
+      "ownedIOSurfaceBytesRange": [
+        17508096,
+        17508096
+      ],
+      "poolDroppedFramesIncludingWarmupRange": [
+        0,
+        0
+      ],
+      "tracePoolDroppedFramesIncludingWarmup": 0,
+      "maxThermalState": 1
+    },
+    {
+      "scene": "gradient",
+      "backend": "layers",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": null,
+      "displaySwapP95MS": null,
+      "traceCallbackP95MS": null,
+      "traceMaxThermalState": null,
+      "captureConfiguration": null,
+      "displayCadenceAvailable": false,
+      "updateToNextCallbackP95MS": 16.77322916657431,
+      "updateToNextCallbackP95MSRange": [
+        16.7713749979157,
+        16.77508333523292
+      ],
+      "processCPUPercentOfOneCore": 55.70638042569354,
+      "processCPUPercentOfOneCoreRange": [
+        55.46433577583398,
+        55.948425075553104
+      ],
+      "processFootprintMiB": 7.2046966552734375,
+      "processFootprintMiBRange": [
+        7.1578216552734375,
+        7.2515716552734375
+      ],
+      "ownedIOSurfaceBytes": 0.0,
+      "ownedIOSurfaceBytesRange": [
+        0,
+        0
+      ],
+      "poolDroppedFramesIncludingWarmupRange": [
+        0,
+        0
+      ],
+      "tracePoolDroppedFramesIncludingWarmup": null,
+      "maxThermalState": 1
+    },
+    {
+      "scene": "gradient",
+      "backend": "drawRect",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 48.88939105059379,
+      "displaySwapP95MS": 33.366584,
+      "traceCallbackP95MS": 20.287083330913447,
+      "traceMaxThermalState": 1,
+      "captureConfiguration": "Animation Hitches + Points of Interest",
+      "displayCadenceAvailable": true,
+      "updateToNextCallbackP95MS": 19.62604166692472,
+      "updateToNextCallbackP95MSRange": [
+        19.055750002735294,
+        20.196333331114147
+      ],
+      "processCPUPercentOfOneCore": 100.09672592146259,
+      "processCPUPercentOfOneCoreRange": [
+        99.96680739658426,
+        100.22664444634091
+      ],
+      "processFootprintMiB": 23.993793487548828,
+      "processFootprintMiBRange": [
+        23.954742431640625,
+        24.03284454345703
+      ],
+      "ownedIOSurfaceBytes": 0.0,
+      "ownedIOSurfaceBytesRange": [
+        0,
+        0
+      ],
+      "poolDroppedFramesIncludingWarmupRange": [
+        0,
+        0
+      ],
+      "tracePoolDroppedFramesIncludingWarmup": 0,
+      "maxThermalState": 1
+    },
+    {
+      "scene": "gradient",
+      "backend": "SCGLayer",
+      "benchmarkRepeats": 2,
+      "displaySwapsPerSecond": 59.5750587272101,
+      "displaySwapP95MS": 16.683417,
+      "traceCallbackP95MS": 16.745291664847173,
+      "traceMaxThermalState": 1,
+      "captureConfiguration": "Animation Hitches + Points of Interest",
+      "displayCadenceAvailable": true,
+      "updateToNextCallbackP95MS": 16.740895833208924,
+      "updateToNextCallbackP95MSRange": [
+        16.738874997827224,
+        16.742916668590624
+      ],
+      "processCPUPercentOfOneCore": 47.39267742603273,
+      "processCPUPercentOfOneCoreRange": [
+        47.148190930376934,
+        47.63716392168854
+      ],
+      "processFootprintMiB": 34.22037887573242,
+      "processFootprintMiBRange": [
+        34.173492431640625,
+        34.26726531982422
+      ],
+      "ownedIOSurfaceBytes": 17508096.0,
+      "ownedIOSurfaceBytesRange": [
+        17508096,
+        17508096
+      ],
+      "poolDroppedFramesIncludingWarmupRange": [
+        0,
+        2
+      ],
+      "tracePoolDroppedFramesIncludingWarmup": 8,
+      "maxThermalState": 1
+    }
+  ],
+  "notes": [
+    "5 traces passed the update-to-swap correlation quality check; excluded captures are preserved separately.",
+    "The source commit and native file hashes identify the packaged SCGLayer implementation measured here.",
+    "Busy-buffer counters include warmup and any automatic display passes; they are not display-drop counters.",
+    "Traces and uninstrumented process measurements are separate runs. Thermal state is recorded per run.",
+    "The original presenter-v5 data remains a separate historical dataset."
+  ]
+}

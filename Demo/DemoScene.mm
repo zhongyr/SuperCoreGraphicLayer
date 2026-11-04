@@ -106,7 +106,7 @@ void DrawText(CGContextRef context, CGRect rect, int32_t textID) {
 @end
 
 void DemoScene::build(CGSize size, size_t count, CGFloat phase, NSString *kind,
-                      bool singleChange, bool childMotion, size_t revision) {
+                      bool singleChange, bool childMotion, size_t revision, bool allMotion) {
   items.clear();
   vectors.clear();
   vectorGradient = [kind isEqualToString:@"gradient"];
@@ -116,7 +116,13 @@ void DemoScene::build(CGSize size, size_t count, CGFloat phase, NSString *kind,
       CGFloat x = 8 + fmod(i * 37.0, MAX(1, size.width - 40));
       CGFloat y = 8 + fmod(i * 53.0, MAX(1, size.height - 40));
       if (childMotion && i == 0) x += 6 * sin(phase * 2);
-      size_t contentRevision = childMotion || (singleChange && i != 0) ? 0 : revision;
+      // Showcase motion uses elapsed time, so slower backends skip ahead instead
+      // of playing the animation more slowly. Every backend receives these rects.
+      if (allMotion) {
+        x += 40 * sin(phase * M_PI / 2 + y * .025);
+        y += 24 * cos(phase * M_PI / 2 + x * .02);
+      }
+      size_t contentRevision = allMotion || childMotion || (singleChange && i != 0) ? 0 : revision;
       vectors.push_back({CGRectMake(x, y, 24, 24), (unsigned)((i + contentRevision) % 2)});
     }
     return;

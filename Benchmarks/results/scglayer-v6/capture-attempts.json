@@ -1,0 +1,12 @@
+[
+  {
+    "scene": "gradient",
+    "backend": "layers",
+    "status": "launch failed before trace attachment",
+    "domain": "com.apple.dt.CoreDeviceError",
+    "code": 10004,
+    "description": "The process identifier of the launched application could not be determined. It may have already terminated.",
+    "matchingSCGDemoCrashReportsFound": 0,
+    "action": "Retried in a separate study directory; no performance result assigned to the failed launch."
+  }
+]

@@ -305,8 +305,8 @@ struct EncodeSample {
       indexOfObject:[args stringForKey:@"backend"] ?: @"layers"];
   if (_backend.selectedSegmentIndex == NSNotFound) _backend.selectedSegmentIndex = 0;
   _workload =
-      [[UISegmentedControl alloc] initWithItems:@[ @"Static", @"All", @"Host", @"One", @"Child" ]];
-  _workload.selectedSegmentIndex = [@[ @"static", @"repaint", @"transform", @"single", @"child" ]
+      [[UISegmentedControl alloc] initWithItems:@[ @"Static", @"All", @"Host", @"One", @"Child", @"Motion" ]];
+  _workload.selectedSegmentIndex = [@[ @"static", @"repaint", @"transform", @"single", @"child", @"motion" ]
       indexOfObject:[args stringForKey:@"workload"] ?: @"static"];
   if (_workload.selectedSegmentIndex == NSNotFound) _workload.selectedSegmentIndex = 0;
   _density = [[UISegmentedControl alloc] initWithItems:@[ @"30 items", @"300", @"1000" ]];
@@ -451,7 +451,8 @@ struct EncodeSample {
 - (void)paint:(CGFloat)phase {
   if (CGRectIsEmpty(_drawing.bounds)) return;
   _scene.build(_drawing.bounds.size, _count, phase, _sceneKind, _workload.selectedSegmentIndex == 3,
-               _workload.selectedSegmentIndex == 4, _updateAttempts);
+               _workload.selectedSegmentIndex == 4, _updateAttempts,
+               _workload.selectedSegmentIndex == 5);
   if (_backend.selectedSegmentIndex == 1) {
     [_drawing setNeedsDisplay];
     return;
@@ -600,7 +601,7 @@ struct EncodeSample {
     @"layerObjectsDetached" : @(_layerObjectsDetached),
     @"backend" : @[ @"layers", @"drawRect", @"SCGLayer" ][_backend.selectedSegmentIndex],
     @"workload" : @[ @"static", @"repaint", @"transform", @"single",
-                     @"child" ][_workload.selectedSegmentIndex],
+                     @"child", @"motion" ][_workload.selectedSegmentIndex],
     @"scene" : _sceneKind,
     @"vectorResourcePolicy" : @"two-immutable-variants-shared-by-all-backends",
     @"canvasOriginX" : @([_drawing convertPoint:CGPointZero toView:self.view].x),

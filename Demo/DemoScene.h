@@ -16,7 +16,8 @@ struct DemoScene {
   std::vector<DemoVectorItem> vectors;
   bool vectorGradient = false;
   void build(CGSize size, size_t count, CGFloat phase, NSString *kind = @"cards",
-             bool singleChange = false, bool childMotion = false, size_t revision = 0);
+             bool singleChange = false, bool childMotion = false, size_t revision = 0,
+             bool allMotion = false);
   void draw(CGContextRef context) const;
   void applyLayers(CALayer *layer, CGFloat scale) const;
 };
